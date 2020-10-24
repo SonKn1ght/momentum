@@ -4,6 +4,11 @@ const time = document.querySelector('.time'),
   name = document.querySelector('.name'),
   focus = document.querySelector('.focus');
 
+// сохраняю сюда значения из полей для перезаписи если они не изменятся
+let currentName = '';
+// храню номер текущей картинки что б при смене получать другую
+const currentImageNumber = 0;
+
 // Show Time
 function showTime() {
   let today = new Date(),
@@ -22,7 +27,12 @@ ${hour}:${addZero(min)}:${addZero(sec)}
 ${dayWeek}, ${day} ${month}
 </div>`;
 
+  // тут слушаем границу часа для смены фона
+  if (min == 0 && sec == 0) {
+
+  }
   setTimeout(showTime, 1000);
+
 }
 
 // Add Zeros
@@ -33,28 +43,28 @@ function addZero(n) {
 // Set Background and Greeting
 function setBgGreet() {
   // 'December 17, 1995 03:24:00'
-  let today = new Date(),
+  let today = new Date(`December 17, 1995 12:24:00`),
     hour = today.getHours();
 
   if (0 <= hour && hour < 6) {
     // Morning
     document.body.style.backgroundImage =
-      "url('./assets/images/overlay.png'), url('https://i.ibb.co/7vDLJFb/morning.jpg')";
+      "url('./assets/images/night/01.jpg')";
     greeting.textContent = 'Good Night, ';
   } else if (6 <= hour && hour < 12) {
     // Morning
     document.body.style.backgroundImage =
-      "url('https://i.ibb.co/7vDLJFb/morning.jpg'), url('./assets/images/overlay.png')";
+      "url('./assets/images/morning/01.jpg')";
     greeting.textContent = 'Good Morning, ';
   } else if (12 <= hour && hour < 18) {
     // Afternoon
     document.body.style.backgroundImage =
-      "url('https://i.ibb.co/3mThcXc/afternoon.jpg'), url('./assets/images/overlay.png')";
+      "url('./assets/images/day/01.jpg')";
     greeting.textContent = 'Good Afternoon, ';
   } else {
     // Evening
     document.body.style.backgroundImage =
-      "url('https://i.ibb.co/924T2Wv/night.jpg'), url('./assets/images/overlay.png')";
+      "url('./assets/images/evening/01.jpg')";
     greeting.textContent = 'Good Evening, ';
   }
 }
@@ -70,21 +80,30 @@ function getName() {
 
 // Set Name
 function setName(e) {
-  if (e.type === 'keypress') {
+  if (e.type === 'keydown') {
     // Make sure enter is pressed
-    if (e.which == 13 || e.keyCode == 13) {
-      localStorage.setItem('name', e.target.innerText);
-      name.blur();
+    if (e.key === 'Enter') {
+      textInputProcessing(name, 'name', 'Name', e);
+      // {      //если не было ввода или он был их пробелов запускаем проверки
+      //   if (e.target.innerText.trim() === '') {
+      //     // если в хранилище пусто отдаем заглушку и сбрасываем фокус
+      //     if (localStorage.getItem('name') === null) {
+      //       name.innerText = '[Enter Name]';
+      //       name.blur();
+      //       return
+      //     }
+      //     // если в хранилище есть значение то отдаем его в поле
+      //     name.innerText = localStorage.getItem('name');
+      //   }
+      //   // если ввод произошел => то пишем его в хранилише и оставляем его в поле => сбрасывае фокус
+      //   localStorage.setItem('name', e.target.innerText);
+      //   name.blur();
+      // }
     }
   } else {
-    localStorage.setItem('name', e.target.innerText);
     // трим удаляет пробелы с краев строки или если в строке одни пробелы то возвращает пустую строку, проверка на ввод пустого значения
-    if (e.target.innerText.trim() === '') {
-      name.textContent = '[Enter Name]';
-    }
+    textInputProcessing(name, 'name', 'Name', e);
   }
-
-
 }
 
 // Get Focus
@@ -98,37 +117,45 @@ function getFocus() {
 
 // Set Focus
 function setFocus(e) {
-  if (e.type === 'keypress') {
+  if (e.type === 'keydown') {
     // Make sure enter is pressed
-    if (e.which == 13 || e.keyCode == 13) {
-      localStorage.setItem('focus', e.target.innerText);
-      focus.blur();
+    if (e.key === 'Enter') {
+      textInputProcessing(focus, 'focus', 'Focus', e);
     }
   } else {
-    localStorage.setItem('focus', e.target.innerText);
-    if (e.target.innerText.trim() === '') {
-      focus.textContent = '[Enter Focus]';
-    }
+    textInputProcessing(focus, 'focus', 'Focus', e);
   }
 }
 
-name.addEventListener('keypress', setName);
+function textInputProcessing(element, attribute, placeholder, evt) {
+
+  if (evt.target.innerText.trim() === '') {
+    if (localStorage.getItem(attribute) === null) {
+      element.innerText = `[Enter ${placeholder}]`;
+      element.blur();
+      return
+    }
+    element.innerText = localStorage.getItem(attribute);
+  }
+  localStorage.setItem(attribute, evt.target.innerText);
+  element.blur();
+}
+
+name.addEventListener('keydown', setName);
 name.addEventListener('blur', setName);
-focus.addEventListener('keypress', setFocus);
+focus.addEventListener('keydown', setFocus);
 focus.addEventListener('blur', setFocus);
 
-
-name.addEventListener('focus', (evt) => {
-  if (evt.target.innerText === '[Enter Name]') {
+// обработчики ловят фокус на вводе текста и очищают поле для ввода.
+{
+  name.addEventListener('focus', (evt) => {
     evt.target.textContent = '';
-  }
-})
-
-focus.addEventListener('focus', (evt) => {
-  if (evt.target.innerText === '[Enter Focus]') {
+  })
+  //
+  focus.addEventListener('focus', (evt) => {
     evt.target.textContent = '';
-  }
-})
+  })
+}
 
 // Run
 showTime();
