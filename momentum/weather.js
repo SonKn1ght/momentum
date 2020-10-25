@@ -1,4 +1,4 @@
-// 'use strict';
+'use strict';
 
 const weatherIcon = document.querySelector('.weather-icon');
 const temperature = document.querySelector('.temperature');

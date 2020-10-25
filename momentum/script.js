@@ -216,10 +216,16 @@ focus.addEventListener('blur', setFocus);
       if (numberImage === -1) {
         numberImage = 23;
       }
-      document.body.style.backgroundImage =
-        `url('./assets/images/${imageList[numberImage]}')`;
-      setTimeout(resetLockBtn, 1000);
-    }
+      const img = document.createElement('img');
+      img.src = `./assets/images/${imageList[numberImage]}`;
+      img.onload = () => {
+        document.body.style.backgroundImage =
+          `url('./assets/images/${imageList[numberImage]}')`;
+        setTimeout(resetLockBtn, 1000);
+      }
+  }
+
+
   })
 
   rightBtn.addEventListener('click', () => {
@@ -230,9 +236,13 @@ focus.addEventListener('blur', setFocus);
       if (numberImage === 24) {
         numberImage = 0;
       }
-      document.body.style.backgroundImage =
-        `url('./assets/images/${imageList[numberImage]}')`;
-      setTimeout(resetLockBtn, 1000);
+      const img = document.createElement('img');
+      img.src = `./assets/images/${imageList[numberImage]}`;
+      img.onload = () => {
+        document.body.style.backgroundImage =
+          `url('./assets/images/${imageList[numberImage]}')`;
+        setTimeout(resetLockBtn, 1000);
+      }
     }
   })
 }

@@ -10,7 +10,7 @@ async function getQuote() {
 
   try {
     const res = await fetch(url);
-    const data = await res.json();
+    var data = await res.json();
   } catch(err) {
     setTimeout(() => {
       wrapperQuote.classList.remove('quote-visible');
