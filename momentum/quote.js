@@ -10,6 +10,14 @@ async function getQuote() {
   const res = await fetch(url);
   const data = await res.json();
 
+  if (res.status !== 200) {
+    setTimeout(() => {
+      wrapperQuote.classList.add('quote-visible')
+      blockquote.textContent = 'Something went wrong on the internet, please try again later';
+    }, 700);
+    return;
+  }
+
   wrapperQuote.classList.remove('quote-visible');
 
   setTimeout(() => {
