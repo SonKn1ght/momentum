@@ -2,12 +2,63 @@
 const time = document.querySelector('.time'),
   greeting = document.querySelector('.greeting'),
   name = document.querySelector('.name'),
-  focus = document.querySelector('.focus');
+  focus = document.querySelector('.focus'),
+  leftBtn = document.querySelector('.left-btn'),
+  rightBtn = document.querySelector('.right-btn');
 
-// сохраняю сюда значения из полей для перезаписи если они не изменятся
-let currentName = '';
-// храню номер текущей картинки что б при смене получать другую
-const currentImageNumber = 0;
+// Secondary functions
+function getRandomInteger(a = 0, b = 1) {
+  const lower = Math.ceil(Math.min(a, b));
+  const upper = Math.floor(Math.max(a, b));
+
+  return Math.floor(lower + Math.random() * (upper - lower + 1));
+};
+
+// объявляяем снаружи список картинок и наполняем в функции через замыкание
+let imageList = [];
+
+// генерируем список на старте
+(function generateImageOfDay() {
+  let imageNight = [];
+  let imageMorning = [];
+  let imageDay = [];
+  let imageEvening = [];
+
+
+  // генерация 6 уникальных картинок под время дня
+  while (imageNight.length < 6) {
+    let current = `night/${addZero(getRandomInteger(1,20))}.jpg`;
+    if (imageNight.includes(current)) {
+      continue;
+    }
+    imageNight.push(current)
+  }
+
+  while (imageMorning.length < 6) {
+    let current = `morning/${addZero(getRandomInteger(1,20))}.jpg`;
+    if (imageMorning.includes(current)) {
+      continue;
+    }
+    imageMorning.push(current)
+  }
+
+  while (imageDay.length < 6) {
+    let current = `day/${addZero(getRandomInteger(1,20))}.jpg`;
+    if (imageDay.includes(current)) {
+      continue;
+    }
+    imageDay.push(current)
+  }
+
+  while (imageEvening.length < 6) {
+    let current = `evening/${addZero(getRandomInteger(1,20))}.jpg`;
+    if (imageEvening.includes(current)) {
+      continue;
+    }
+    imageEvening.push(current)
+  }
+  imageList = [...imageNight, ...imageMorning, ...imageDay, ...imageEvening]
+})();
 
 // Show Time
 function showTime() {
@@ -29,9 +80,9 @@ ${dayWeek}, ${day} ${month}
 
   // тут слушаем границу часа для смены фона
   if (min == 0 && sec == 0) {
-
+    setBgGreet();
   }
-  setTimeout(showTime, 1000);
+  // setTimeout(showTime, 1000);
 
 }
 
@@ -43,29 +94,29 @@ function addZero(n) {
 // Set Background and Greeting
 function setBgGreet() {
   // 'December 17, 1995 03:24:00'
-  let today = new Date(`December 17, 1995 12:24:00`),
+  let today = new Date(),
     hour = today.getHours();
 
   if (0 <= hour && hour < 6) {
-    // Morning
+    // Night
     document.body.style.backgroundImage =
-      "url('./assets/images/night/01.jpg')";
-    greeting.textContent = 'Good Night, ';
+      `url('./assets/images/${imageList[hour]}')`;
+    greeting.textContent = 'Good Night ';
   } else if (6 <= hour && hour < 12) {
     // Morning
     document.body.style.backgroundImage =
-      "url('./assets/images/morning/01.jpg')";
-    greeting.textContent = 'Good Morning, ';
+      `url('./assets/images/${imageList[hour]}')`;
+    greeting.textContent = 'Good Morning ';
   } else if (12 <= hour && hour < 18) {
     // Afternoon
     document.body.style.backgroundImage =
-      "url('./assets/images/day/01.jpg')";
-    greeting.textContent = 'Good Afternoon, ';
+      `url('./assets/images/${imageList[hour]}')`;
+    greeting.textContent = 'Good Afternoon ';
   } else {
     // Evening
     document.body.style.backgroundImage =
-      "url('./assets/images/evening/01.jpg')";
-    greeting.textContent = 'Good Evening, ';
+      `url('./assets/images/${imageList[hour]}')`;
+    greeting.textContent = 'Good Evening ';
   }
 }
 
@@ -156,6 +207,48 @@ focus.addEventListener('blur', setFocus);
     evt.target.textContent = '';
   })
 }
+
+// обработчики пролистывания фоновых картинок
+{
+  let today = new Date();
+  // получаем номер картинки на старте страницы
+  let numberImage = today.getHours();
+  // блокирующая переменная и функция для ее возврата по таймауту
+  let lock = true;
+  function resetLock() {
+    lock = true;
+  }
+
+  leftBtn.addEventListener('click', () => {
+    if (lock === true) {
+      lock = false;
+      numberImage--;
+      if (numberImage === -1) {
+        numberImage = 23;
+      }
+      document.body.style.backgroundImage =
+        `url('./assets/images/${imageList[numberImage]}')`;
+      setTimeout(resetLock, 1000);
+    }
+
+  })
+
+  rightBtn.addEventListener('click', () => {
+    if (lock === true) {
+      lock = false;
+      numberImage++;
+      if (numberImage === 24) {
+        numberImage = 0;
+      }
+      document.body.style.backgroundImage =
+        `url('./assets/images/${imageList[numberImage]}')`;
+      setTimeout(resetLock, 1000);
+    }
+  })
+}
+
+
+
 
 // Run
 showTime();

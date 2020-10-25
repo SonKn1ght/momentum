@@ -22,19 +22,61 @@ body {
 
   font-size: 2rem;
 
-  /*background-image: url("./assets/images/overlay.png");*/
-  /*background-repeat: no-repeat;*/
-  /*background-position: center, center;*/
+  transition: background-image 1s ease-in-out;
 }
 
 .wrapper {
+  position: relative;
+
   display: flex;
   flex-direction: column;
   background-color: rgba(41, 41, 41, 0.6);
   border-radius: 9px 9px 9px 9px;
   padding: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 80px;
+}
 
+.time {
+  position: relative;
+}
+
+.left-btn {
+  position: absolute;
+  bottom: -50px;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(41, 41, 41, 0.6);
+
+  user-select: none;
+  font-size: 3rem;
+  line-height: 3.5rem;
+  transition: all 0.5s ease;
+}
+
+.right-btn {
+  position: absolute;
+  bottom: -50px;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(41, 41, 41, 0.6);
+
+  user-select: none;
+  font-size: 3rem;
+  line-height: 3.5rem;
+  transition: all 0.5s ease;
+}
+
+.left-btn:hover, .right-btn:hover {
+  background-color: gray;
+  cursor: pointer;
+}
+
+.left-btn:active, .right-btn:active {
+  bottom: -54px;
 }
 
 .wrapper-date {
