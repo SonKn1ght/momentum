@@ -172,13 +172,17 @@ button:active, button:focus {
 }
 
 /*для цитаты*/
-.wrapper-quote {
+
+.wrapper-btn {
+  position: relative;
+  padding: 0 50px 0 0;
+
   justify-self: end;
   align-self: end;
+}
 
+.wrapper-quote {
   display: flex;
-  flex-direction: column;
-  align-items: center;
 
   opacity: 0;
   transition: all 0.7s ease-in-out;
@@ -203,6 +207,11 @@ button:active, button:focus {
   text-align: right;
 }
 .btn {
+  position: absolute;
+  bottom: 22px;
+  right: 10px;
+  opacity: 1;
+
   width: 30px;
   height: 30px;
   border: 0;
@@ -213,7 +222,7 @@ button:active, button:focus {
   background-repeat: no-repeat;
   background-color: transparent;
   filter: grayscale(.8);
-  margin-top: 5px;
+  margin-left: 20px;
 }
 .btn:hover {
   cursor: pointer;
