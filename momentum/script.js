@@ -1,3 +1,5 @@
+'use strict';
+
 // DOM Elements
 const time = document.querySelector('.time'),
   greeting = document.querySelector('.greeting'),
@@ -7,6 +9,7 @@ const time = document.querySelector('.time'),
   rightBtn = document.querySelector('.right-btn');
 
 // Secondary functions
+// выдает псевдорандомное целое число из заданного интервала
 function getRandomInteger(a = 0, b = 1) {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
@@ -65,9 +68,9 @@ function showTime() {
   let today = new Date(),
     hour = today.getHours(),
     min = today.getMinutes(),
-    sec = today.getSeconds();
-    dayWeek = today.toLocaleString(`en-US`, {weekday: `long`});
-    day = today.getDate();
+    sec = today.getSeconds(),
+    dayWeek = today.toLocaleString(`en-US`, {weekday: `long`}),
+    day = today.getDate(),
     month = today.toLocaleString(`en-US`, {month: `long`});
 
   // Output Time
@@ -135,21 +138,6 @@ function setName(e) {
     // Make sure enter is pressed
     if (e.key === 'Enter') {
       textInputProcessing(name, 'name', 'Name', e);
-      // {      //если не было ввода или он был их пробелов запускаем проверки
-      //   if (e.target.innerText.trim() === '') {
-      //     // если в хранилище пусто отдаем заглушку и сбрасываем фокус
-      //     if (localStorage.getItem('name') === null) {
-      //       name.innerText = '[Enter Name]';
-      //       name.blur();
-      //       return
-      //     }
-      //     // если в хранилище есть значение то отдаем его в поле
-      //     name.innerText = localStorage.getItem('name');
-      //   }
-      //   // если ввод произошел => то пишем его в хранилише и оставляем его в поле => сбрасывае фокус
-      //   localStorage.setItem('name', e.target.innerText);
-      //   name.blur();
-      // }
     }
   } else {
     // трим удаляет пробелы с краев строки или если в строке одни пробелы то возвращает пустую строку, проверка на ввод пустого значения
@@ -213,27 +201,30 @@ focus.addEventListener('blur', setFocus);
   let today = new Date();
   // получаем номер картинки на старте страницы
   let numberImage = today.getHours();
-  // блокирующая переменная и функция для ее возврата по таймауту
-  let lock = true;
-  function resetLockBtn(elem) {
-    elem.disabled = false;
+  // сбрасывавем блокирующий атрибут, вызывая его по таймауту
+  function resetLockBtn() {
+    leftBtn.disabled = false;
+    rightBtn.disabled = false;
   }
 
   leftBtn.addEventListener('click', () => {
     if (leftBtn.disabled === false) {
+      // блочим обе кнопки => иначе, нажатием сначала на левую и потом резко на правую, можно заставить изображение дернуться
       leftBtn.disabled = true;
+      rightBtn.disabled = true;
       numberImage--;
       if (numberImage === -1) {
         numberImage = 23;
       }
       document.body.style.backgroundImage =
         `url('./assets/images/${imageList[numberImage]}')`;
-      setTimeout(resetLockBtn, 1000, leftBtn);
+      setTimeout(resetLockBtn, 1000);
     }
   })
 
   rightBtn.addEventListener('click', () => {
     if (rightBtn.disabled === false) {
+      leftBtn.disabled = true;
       rightBtn.disabled = true;
       numberImage++;
       if (numberImage === 24) {
@@ -241,7 +232,7 @@ focus.addEventListener('blur', setFocus);
       }
       document.body.style.backgroundImage =
         `url('./assets/images/${imageList[numberImage]}')`;
-      setTimeout(resetLockBtn, 1000, rightBtn);
+      setTimeout(resetLockBtn, 1000);
     }
   })
 }

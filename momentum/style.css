@@ -8,32 +8,66 @@ html {
   font-size: 10px;
 }
 
+@media (max-width: 600px) {
+  html {
+    font-size: 8px;
+  }
+}
+
 body {
   font-family: 'Quicksand', sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+
   height: 100vh;
   background-size: cover;
   color: #ffffff;
-  overflow: hidden;
+  overflow-x: hidden;
 
+  background-attachment: fixed;
   font-size: 2rem;
-
   transition: background-image 1s ease-in-out;
+}
+
+.container {
+  display: grid;
+  grid-template-rows: 200px auto 250px;
+  justify-items: center;
+  align-items: center;
+
+  max-width: 1280px;
+  margin: 0 auto;
+
+  text-align: center;
+  padding: 40px;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 30px 10px;
+  }
 }
 
 .wrapper {
   position: relative;
+  max-width: 1280px;
 
   display: flex;
   flex-direction: column;
   background-color: rgba(41, 41, 41, 0.6);
   border-radius: 9px 9px 9px 9px;
-  padding: 20px;
-  margin-bottom: 80px;
+
+  margin-bottom: 20px;
+}
+
+.wrapper-center {
+  display: flex;
+  flex-direction: column;
+  max-width: 70%;
+}
+
+@media (max-width: 600px) {
+  .wrapper-center {
+    max-width: 100%;
+  }
 }
 
 .time {
@@ -84,16 +118,29 @@ body {
 }
 
 .wrapper-date {
+  font-size: 1.6rem;
+}
 
+.time-wrapper {
+  width: 300px;
+  align-self: center;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  margin-bottom: 70px;
 }
 
 .wrapper-time {
+  width: 200px;
   font-size: 5rem;
   line-height: 5.6rem;
 }
 
 .wrapper-name {
-  max-width: 60%;
+  padding: 0 20px;
+  margin-bottom: 20px;
 }
 
 .wrapper-focus {
@@ -106,32 +153,129 @@ body {
 }
 
 .focus {
-
   word-break: break-all;
 }
 
-/*.time {*/
-/*  font-size: 5rem;*/
-/*}*/
-
 h1 {
-  font-size: 3rem;
-  /*margin-bottom: 3rem;*/
+  font-size: 3.5rem;
 }
 
 h2 {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
-  opacity: 0.8;
 }
 
 button:active, button:focus {
   outline: none;
 }
 
-@media (max-width: 700px) {
-  .time {
-    /*font-size: 6rem;*/
+/*для цитаты*/
+.wrapper-quote {
+  justify-self: end;
+  align-self: end;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  opacity: 0;
+  transition: all 0.7s ease-in-out;
+}
+
+.quote-visible {
+  opacity: 1;
+}
+
+.quote {
+  font: 1.2rem Georgia, serif;
+  margin: 0;
+  border-radius: 1em;
+}
+
+.quote figcaption,
+.quote blockquote {
+  font-size: 2rem;
+  margin: 0.5rem 1rem 1rem 1rem;
+}
+.quote figcaption {
+  text-align: right;
+}
+.btn {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 50%;
+  background-image: url("./assets/images/Update-Button.png");
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  filter: grayscale(.8);
+  margin-top: 5px;
+}
+.btn:hover {
+  filter: grayscale(.2);
+}
+.btn:active,
+.btn:focus {
+  outline: 0;
+}
+.btn:active{
+  transform: scale(1.02)
+}
+
+/*для погоды*/
+
+.wrapper-weather {
+  justify-self: start;
+  align-self: start;
+
+  display: flex;
+  padding: 5px 20px;
+}
+
+@media (max-width: 600px) {
+  .wrapper-weather {
+    justify-self: center;
   }
 }
 
+.weather__left-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15px;
+}
+
+.weather__right-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.8rem;
+}
+
+.city {
+  display: flex;
+  text-align: center;
+
+  width: 100%;
+  padding: 0;
+
+  font-size: 2.2rem;
+  color: white;
+  background-color: inherit;
+  border: none;
+  outline: none;
+}
+
+.incorrect-input-city {
+  display: none;
+
+  font-size: 1.2rem;
+  color: red;
+}
+
+.incorrect-input-city_on {
+  display: block;
+}
