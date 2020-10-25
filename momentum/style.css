@@ -71,7 +71,7 @@ body {
 }
 
 .time {
-  position: relative;
+  text-align: center;
 }
 
 .left-btn {
@@ -133,7 +133,9 @@ body {
 }
 
 .wrapper-time {
-  width: 200px;
+  font-family: monospace;
+  text-align: center;
+  width: auto;
   font-size: 5rem;
   line-height: 5.6rem;
 }
@@ -214,6 +216,7 @@ button:active, button:focus {
   margin-top: 5px;
 }
 .btn:hover {
+  cursor: pointer;
   filter: grayscale(.2);
 }
 .btn:active,
