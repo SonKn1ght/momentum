@@ -82,7 +82,7 @@ ${dayWeek}, ${day} ${month}
   if (min == 0 && sec == 0) {
     setBgGreet();
   }
-  // setTimeout(showTime, 1000);
+  setTimeout(showTime, 1000);
 
 }
 
@@ -215,34 +215,33 @@ focus.addEventListener('blur', setFocus);
   let numberImage = today.getHours();
   // блокирующая переменная и функция для ее возврата по таймауту
   let lock = true;
-  function resetLock() {
-    lock = true;
+  function resetLockBtn(elem) {
+    elem.disabled = false;
   }
 
   leftBtn.addEventListener('click', () => {
-    if (lock === true) {
-      lock = false;
+    if (leftBtn.disabled === false) {
+      leftBtn.disabled = true;
       numberImage--;
       if (numberImage === -1) {
         numberImage = 23;
       }
       document.body.style.backgroundImage =
         `url('./assets/images/${imageList[numberImage]}')`;
-      setTimeout(resetLock, 1000);
+      setTimeout(resetLockBtn, 1000, leftBtn);
     }
-
   })
 
   rightBtn.addEventListener('click', () => {
-    if (lock === true) {
-      lock = false;
+    if (rightBtn.disabled === false) {
+      rightBtn.disabled = true;
       numberImage++;
       if (numberImage === 24) {
         numberImage = 0;
       }
       document.body.style.backgroundImage =
         `url('./assets/images/${imageList[numberImage]}')`;
-      setTimeout(resetLock, 1000);
+      setTimeout(resetLockBtn, 1000, rightBtn);
     }
   })
 }
